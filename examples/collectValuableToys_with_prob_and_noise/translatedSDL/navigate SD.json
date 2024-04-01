@@ -1,0 +1,38 @@
+{
+  "PlpMain": {
+    "Project": "collect_toys",
+    "Name": "navigate",
+    "Type": "PLP"
+  },
+  "PossibleParametersValue": [
+    {
+      "AssignmentCode": [
+        "for(int i=0;i<=4;i++)",
+        "{",
+        "  __possibleParameters.push_back(std::make_tuple(i));",
+        "}"
+      ]
+    }
+  ],
+  "GlobalVariableModuleParameters": [
+    {
+      "Name": "oDestination",
+      "Type": "int"
+    }
+  ],
+  "DynamicModel": {
+    "NextStateAssignments": [
+      {
+        "AssignmentCode": [
+          "vector<float> chances{0.5, 0.7, 0.8, 0.85, 0.95};",
+          "vector<float> no_noise_chances{0.7, 0.7, 0.8, 0.8, 0.95};",
+          "bool success = AOSUtils::Bernoulli(chances[oDestination]);",
+          "bool no_noise = AOSUtils::Bernoulli(no_noise_chances[oDestination]);",
+          "state__.robotLocation = success ? oDestination : state__.robotLocation;",
+          "__moduleResponse = success && no_noise || !success && !no_noise ? eSuccess : eFailed;",
+          "__reward =  -3 ;"
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "PlpMain": {
+    "Project": "collect_toys",
+    "Name": "place",
+    "Type": "PLP"
+  },
+  "DynamicModel": {
+    "NextStateAssignments": [
+      {
+        "AssignmentCode": [
+          "tToy* toy;",
+          "bool holding = false;",
+          "for(int i=0; i < state__.tToyObjects.size(); i++)",
+          "{",
+          "    if(LArm == (*state__.tToyObjects[i]).location)",
+          "    {",
+          "        toy = state__.tToyObjects[i]; ",
+          "        state__.tToyObjects[i]->location = LChild; ",
+          "        holding=true; ",
+          "        break;",
+          "    }",
+          "}",
+          "__moduleResponse = holding ? eSuccess : eFailed;",
+          "__reward = !holding ? -3 : (state.robotLocation == LChild ? toy->reward : -1);"
+        ]
+      }
+    ]
+  }
+}

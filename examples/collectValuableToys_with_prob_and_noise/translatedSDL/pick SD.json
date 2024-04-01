@@ -1,0 +1,65 @@
+{
+  "PlpMain": {
+    "Project": "collect_toys",
+    "Name": "pick",
+    "Type": "PLP"
+  },
+  "PossibleParametersValue": [
+    {
+      "AssignmentCode": [
+        "__possibleParameters.push_back(std::make_tuple(\"blue\"));",
+        "__possibleParameters.push_back(std::make_tuple(\"red\"));",
+        "__possibleParameters.push_back(std::make_tuple(\"black\"));",
+        "__possibleParameters.push_back(std::make_tuple(\"green\"));"
+      ]
+    }
+  ],
+  "GlobalVariableModuleParameters": [
+    {
+      "Name": "toyType",
+      "Type": "string"
+    }
+  ],
+  "Preconditions": {
+    "GlobalVariablePreconditionAssignments": [
+      {
+        "AssignmentCode": [
+          "__meetPrecondition = false;",
+          "bool holding = false;",
+          "bool typeMatch = false;",
+          "for(int i=0; i < state.tToyObjects.size(); i++)",
+          "{",
+          "    if(LArm == state.tToyObjects[i]->location)",
+          "    { ",
+          "        holding = true; break;",
+          "    }",
+          "    if(state.robotLocation == state.tToyObjects[i]->location && state.tToyObjects[i]->type == toyType) typeMatch=true;",
+          "}",
+          "__meetPrecondition = !holding && typeMatch && state.robotLocation != LChild;"
+        ]
+      }
+    ],
+    "ViolatingPreconditionPenalty": 0
+  },
+  "DynamicModel": {
+    "NextStateAssignments": [
+      {
+        "AssignmentCode": [
+          " bool success =  __meetPrecondition ;",
+          " state__.pickActionsLeft--;",
+          " if(success)",
+          " {",
+          "    for(int i=0; i < state__.tToyObjects.size(); i++){",
+          "        if(state.robotLocation == state.tToyObjects[i]->location)",
+          "        {",
+          "            state__.tToyObjects[i]->location = LArm; break;",
+          "        }",
+          "    }",
+          "}",
+          "__moduleResponse = success ? eSuccess : eFailed;",
+          " __reward = success ? -1 : -2;"
+        ]
+      }
+    ]
+  }
+}

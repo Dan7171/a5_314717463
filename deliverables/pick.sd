@@ -1,0 +1,41 @@
+project: collect_toys 			
+  
+ available_parameters_code:
+__possibleParameters.push_back(std::make_tuple("blue"));
+__possibleParameters.push_back(std::make_tuple("red"));
+__possibleParameters.push_back(std::make_tuple("black"));
+__possibleParameters.push_back(std::make_tuple("green"));
+
+parameter: string toyType  
+precondition:
+__meetPrecondition = false;
+bool holding = false;
+bool typeMatch = false;
+for(int i=0; i < state.tBallObjects.size(); i++)
+{
+    if(LArm == state.tBallObjects[i]->location)
+	{ 
+		holding = true; break;
+	}
+    if(state.robotLocation == state.tBallObjects[i]->location && state.tBallObjects[i]->color == toyType) typeMatch=true;
+}
+__meetPrecondition = !holding && typeMatch && state.robotLocation != LChild;
+violate_penalty: 0
+
+dynamic_model: 
+ bool success =  __meetPrecondition ;
+ state__.pickActionsLeft--;
+ if(success)
+ {
+	for(int i=0; i < state__.tBallObjects.size(); i++){
+		if(state.robotLocation == state.tBallObjects[i]->location)
+		{
+			state__.tBallObjects[i]->location = LArm; break;
+		}
+	}
+}
+__moduleResponse = success ? eSuccess : eFailed;
+ __reward = success ? -1 : -2;
+ 
+ 
+ 

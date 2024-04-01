@@ -1,0 +1,53 @@
+//ef  - environment file.Name must be as project name
+// goal of this file is to define state variables. State variables can be from types of c++ objects/primitive types.
+// in this example there are 
+project: example
+horizon: 10
+discount: 0.97 
+
+// tLocation is a c++ type which helps defining state variables
+define_type: tLocation
+variable: float x 0.0
+variable: float y 0.0
+variable: float z 0.0
+variable: int discrete -1
+// tVisitedLocation is another c++ type helps defining state variables
+define_type: tVisitedLocation
+variable: int discrete 1
+variable: bool visited false
+
+// state_variable (saved word) - we have 4 state variables here - one tLocation (called robotLocation) and three tvisited location (called v1,v2,v3)
+state_variable: tLocation robotLocation // first state var
+code:
+state.robotLocation.discrete = -1
+
+state_variable: tVisitedLocation v1 // second state var
+code:
+state.v1.discrete = 1 // discrete is the  fixed number of location (won't change during run) 
+
+state_variable: tVisitedLocation v2 // third state var
+code:
+state.v2.discrete = 2
+
+state_variable: tVisitedLocation v3 // fourth state var
+code:
+state.v3.discrete = 3
+
+initial_belief:// initial_belief (saved word) - initializing the initial state
+state.robotLocation.discrete = AOS.Bernoulli(0.5) ? 1 : (AOS.Bernoulli(0.2) ? 2 : 3); //0.5 chance for 1, 0.1 chance for 2, 0.4 for
+//reward_code (saved word) 
+reward_code:
+if (!state.v1.visited && state.v2.visited) // preffrer visiting location 1 before location 2 (punishment of 50) 
+{
+__reward=-50;
+__stopEvaluatingState =true; // ignore we won't use this stop evaluating in assignment 5
+}
+reward_code:
+if (state.v1.visited && state.v2.visited && state.v3.visited)
+{
+__reward =7000;
+__isGoalState =true;
+}
+extrinsic_code: // ignore (external events - irrelevant for assignment5)
+if (AOS.Bernoulli(0.05)) state_.robotLocation.discrete = -1;
+

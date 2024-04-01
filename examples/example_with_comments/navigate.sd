@@ -1,0 +1,51 @@
+// project name must be the same in all files. Can leave as example. Should be as the file name of the environment file (ef)
+project: example 
+
+// parameters (saved word) - define the parameters of this action (to make different actions fromt this action template)
+parameter: int discreteDestination
+parameter: float x
+parameter: float y
+parameter: float z 
+// available_parameters_code (saved word) - The valid assignments of this action template of navigation. 
+
+// Each row of the 3 is a 4 length vector of tupple with an assignment to the parameters above. This 3 assignments (vectors) are the 3 unique actions which can be done in the world using this navigate action template.  
+available_parameters_code: 
+__possibleParameters.push_back(std::make_tuple(1,-1.01606154442,0.660750925541,-0.00454711914062));
+__possibleParameters.push_back(std::make_tuple(2,0.00500533776358,0.640727937222,-0.00143432617188)); 
+__possibleParameters.push_back(std::make_tuple(3,0.986030161381,0.610693752766,-0.00143432617188));
+
+//precondition (saved word) - 
+precondition:
+__meetPrecondition = discreteDestination != state.robotLocation.discrete; // 
+violate_penalty: -10 
+
+// dynamic_model (saved word)- how environment is changed after I made an action fromt this kind (navigation). 
+// definitions:
+// state.x := the previous state (before making the action - navigate) in state variable x
+// state_.x := irrelevalt for us (external changes)
+// state__.x := the value of state variable x in state, AFTER the action was done (after navigation)  
+
+dynamic_model: 
+state__.robotLocation.discrete = ! __meetPrecondition || AOS.Bernoulli(0.1) ? -1: discreteDestination; // if navigation failed (not meeting preconditionbs or some randomness chance) the location is -1 (robot is lost). Else (navigation succeeded) - robot location (after action) will be the descrete location (from the action parameters)
+if(state__.robotLocation.discrete == discreteDestination) // checking if the action succeeded and if so, not changing only the descrete location but also the real location xyz (not sure why its splitted)
+{ 
+state__.robotLocation.x = x; // meaning - state var robotLocation will be change to x, y,z (the action params)
+state__.robotLocation.y = y; 
+state__.robotLocation.z = z;
+}
+for(int i=0; i < state__.tVisitedLocationObjects.size();i++) // run on the 3 objects
+{
+	if(state__.tVisitedLocationObjects[i]->discrete == state__.robotLocation.discrete) // if discrete (after action)state is the robot location (after action) I will mark it as visited. Note that I check it after I defined the change in robotlocation as a result of this action 
+	{
+	state__.tVisitedLocationObjects[i]->visited = true;
+	break;
+	}
+}
+__moduleResponse = (state__.robotLocation.discrete == -1 && AOS.Bernoulli(0.8)) ? eFailed : eSuccess;
+
+// __reward - the reward of the navigation. These rewars are summed up with the the rewards which are not dependent by the action from the ef file.
+// we can change in assignment state_ to state but they are both ok (there are not external change.
+// the reward below is -5 if robot previous belief location (before action) is -1 (robot doesent know where it is) , else (it knows): -1 * oclidian distance of navigation
+__reward = state_.robotLocation.discrete == -1 ? -5 : -(sqrt(pow(state.robotLocation.x-x,2.0)+pow(state.robotLocation.y-y,2.0)))*100;
+if (state__.robotLocation.discrete == -1) __reward =  -10; // finnaly if the robot location after the action is -1 (lost) punish it with -10
+

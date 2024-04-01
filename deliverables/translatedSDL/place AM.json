@@ -1,0 +1,60 @@
+{
+  "PlpMain": {
+    "Project": "collect_toys",
+    "Name": "place",
+    "Type": "Glue"
+  },
+  "GlueFramework": "ROS",
+  "ModuleResponse": {
+    "ResponseRules": [
+      {
+        "Response": "eSuccess",
+        "ConditionCodeWithLocalVariables": " skillSuccess3"
+      },
+      {
+        "Response": "eFailed",
+        "ConditionCodeWithLocalVariables": " True"
+      }
+    ]
+  },
+  "ModuleActivation": {
+    "RosService": {
+      "ImportCode": [
+        {
+          "From": "geometry_msgs.msg",
+          "Import": [
+            "Point"
+          ]
+        },
+        {
+          "From": "task3_env.srv",
+          "Import": [
+            "place",
+            "placeResponse"
+          ]
+        }
+      ],
+      "ServiceName": "place",
+      "ServicePath": "/place",
+      "ServiceParameters": []
+    }
+  },
+  "LocalVariablesInitialization": [
+    {
+      "FromROSServiceResponse": true,
+      "LocalVariableName": "skillSuccess3",
+      "VariableType": "bool",
+      "AssignmentCode": [
+        "skillSuccess3=__input.success"
+      ],
+      "ImportCode": [
+        {
+          "From": "std_msgs.msg",
+          "Import": [
+            "Bool"
+          ]
+        }
+      ]
+    }
+  ]
+}

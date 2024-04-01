@@ -1,0 +1,49 @@
+project: example 
+
+
+//response part...
+// in this part set a list of response&respone rule pairs. THe response rule is a python code. The response will be the first item which response rule is true... evaluated one after the next 
+
+response: eSuccess // see in navigate.sd.... e for enum
+response_rule: skillSuccess and goal_reached // the local variable skillSucecss is defined below (local vairables are using as methods to collect information from simulation). skillSuccess is the response of the navigation skill. goal_reached is something extra but I am not sure if we need it in the task because it listens to rosout (log)...Or said he is 99% sure that we don't need goal_reached in our work, just skillSuccess in the response_rule 
+response: eFailed // see in navigate.sd.... e for enum
+response_rule: True // the initial values dont matter - captial T because this is python 
+
+
+module_activation: ros_service // keep like this
+imports: from: geometry_msgs.msg import: Point // import the relevant things to the service of action - same from assignment3
+imports: from: simple_navigation_goals.srv import: navigateResponse, navigate
+path: /navigate_to_point
+srv: navigate
+parameter: goal
+code:
+Point(x= nav_to_x, y= nav_to_y, z= nav_to_z)
+
+
+local_variable: skillSuccess
+imports: from: std_msgs.msg import: Bool
+type: bool
+from_ros_reservice_response: true
+code: 
+skillSuccess=__input.success // input is the response of the navigation service - input.success is in navigation.srv
+
+
+local_variable: goal_reached // important - all local variables in all files must have unique names. tip - start it with filename_
+topic: /rosout
+message_type: Log
+imports: from: rosgraph_msgs.msg import: Log
+type: bool 
+initial_value: False
+code:
+if goal_reached == True:
+    return True
+else:
+    return __input.msg.find('Goal reached') > -1
+local_variable: nav_to_x // make the local var nav_to_x = x
+action_parameter: x // what action parameter the local variable is based on (from the sd file)
+local_variable: nav_to_y
+action_parameter: y
+local_variable: nav_to_z
+action_parameter: z
+ 
+	

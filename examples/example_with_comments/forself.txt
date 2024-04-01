@@ -1,0 +1,2 @@
+1. all sd, am , ef must sit int he same directory
+2. in pick sd file we will use the name of toy as string

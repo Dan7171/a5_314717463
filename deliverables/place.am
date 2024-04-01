@@ -1,0 +1,22 @@
+project: collect_toys 
+ 
+local_variable: skillSuccess3
+imports: from: std_msgs.msg import: Bool
+type: bool
+from_ros_reservice_response: true  
+code: 
+skillSuccess3=__input.success
+ 
+module_activation: ros_service
+imports: from: geometry_msgs.msg import: Point
+imports: from: task3_env.srv import: place, placeResponse
+path: /place
+srv: place 
+
+response: eSuccess
+response_rule: skillSuccess3
+
+response: eFailed
+response_rule: True
+
+     
