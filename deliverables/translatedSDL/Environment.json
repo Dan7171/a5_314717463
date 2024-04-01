@@ -95,7 +95,7 @@
     {
       "Name": "robotLocation",
       "Type": "int",
-      "DefaultCode": "state.robotLocation=LChild;",
+      "DefaultCode": "state.robotLocation=4;",
       "IsArray": false,
       "IsActionParameterValue": false,
       "ML_IgnoreVariable": false

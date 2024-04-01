@@ -6,36 +6,54 @@ __possibleParameters.push_back(std::make_tuple("red"));
 __possibleParameters.push_back(std::make_tuple("black"));
 __possibleParameters.push_back(std::make_tuple("green"));
 
-parameter: string toyType  
+parameter: string selected_color
+
 precondition:
 __meetPrecondition = false;
-bool holding = false;
-bool typeMatch = false;
+bool already_holding_ball = true;
+bool picked_correct_color = false;
+bool valid_pick = false;
+int in_hand_loc = 5;
+int baby_loc = 4;
+int cur_agent_loc = state.robotLocation;
 for(int i=0; i < state.tBallObjects.size(); i++)
 {
-    if(LArm == state.tBallObjects[i]->location)
-	{ 
-		holding = true; break;
-	}
-    if(state.robotLocation == state.tBallObjects[i]->location && state.tBallObjects[i]->color == toyType) typeMatch=true;
+    int ith_ball_loc = state.tBallObjects[i]->location;
+    if(cur_agent_loc == ith_ball_loc){
+        already_holding_ball = (ith_ball_loc == in_hand_loc);
+        if(already_holding_ball){
+            valid_pick = false;
+            break;
+        }
+        if (cur_agent_loc == baby_loc){
+            valid_pick = false;
+            break;
+        }
+        string ith_ball_color = state.tBallObjects[i]->color;
+	    picked_correct_color = (ith_ball_color == selected_color);
+	    if(picked_correct_color){
+	        valid_pick = true;
+	        break;
+	    }
+    }
 }
-__meetPrecondition = !holding && typeMatch && state.robotLocation != LChild;
+__meetPrecondition = valid_pick;
 violate_penalty: 0
 
-dynamic_model: 
- bool successful_pick =  __meetPrecondition ;
- state__.pick_cnt++;
- if(successful_pick)
- {
-	for(int i=0; i < state__.tBallObjects.size(); i++){
-		if(state.robotLocation == state.tBallObjects[i]->location)
-		{
-			state__.tBallObjects[i]->location = LArm; break;
-		}
-	}
+dynamic_model:
+int cur_agent_loc = state.robotLocation;
+state__.pick_cnt++;
+if(__meetPrecondition){
+for(int i=0; i < state__.tBallObjects.size(); i++){
+    int ith_ball_loc = state.tBallObjects[i]->location;
+    if(state.robotLocation == ith_ball_loc )
+    {
+        state__.tBallObjects[i]->location = in_hand_loc;
+    }
 }
-__moduleResponse = successful_pick ? eSuccess : eFailed;
- __reward = successful_pick ? -1 : -2;
+}
+__moduleResponse = __meetPrecondition ? eSuccess : eFailed;
+ __reward = __meetPrecondition ? -1 : -2;
  
  
  

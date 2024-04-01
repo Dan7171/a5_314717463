@@ -4,13 +4,13 @@ tBall* toy;
 bool holding = false;
 for(int i=0; i < state__.tBallObjects.size(); i++)
 {
-    if(LArm == (*state__.tBallObjects[i]).location)
+    if(5 == (*state__.tBallObjects[i]).location)
 	{
 		toy = state__.tBallObjects[i];
-		state__.tBallObjects[i]->location = LChild;
+		state__.tBallObjects[i]->location = 4;
 		holding=true; 
 		break;
 	}
 }
 __moduleResponse = holding ? eSuccess : eFailed;
-__reward = !holding ? -3 : (state.robotLocation == LChild ? toy->reward : -1);
+__reward = !holding ? -3 : (state.robotLocation == 4 ? toy->reward : -1);

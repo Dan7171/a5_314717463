@@ -36,7 +36,7 @@ state.pick_cnt=0;
 
 state_variable: int robotLocation 
 code:
-state.robotLocation=LChild;
+state.robotLocation=4;
  
 reward_code:
 if(state.pick_cnt > 6 || state.nav_cnt > 8)

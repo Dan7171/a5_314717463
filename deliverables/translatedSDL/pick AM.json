@@ -39,15 +39,15 @@
       "ServiceParameters": [
         {
           "ServiceFieldName": "toy_type",
-          "AssignServiceFieldCode": "toy_type_name"
+          "AssignServiceFieldCode": "selected_color"
         }
       ]
     }
   },
   "LocalVariablesInitialization": [
     {
-      "InputLocalVariable": "toy_type_name",
-      "FromGlobalVariable": "toyType"
+      "InputLocalVariable": "selected_color",
+      "FromGlobalVariable": "color"
     },
     {
       "FromROSServiceResponse": true,
