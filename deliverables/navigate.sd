@@ -7,7 +7,9 @@ __possibleParameters.push_back(std::make_tuple(3));
 __possibleParameters.push_back(std::make_tuple(4));
 
 parameter: int oDestination
-dynamic_model:  
+
+dynamic_model:
+state__.nav_cnt++;
 vector<float> success_chances{0.5, 0.7, 0.8, 0.85, 0.95};
 vector<float> accurate_sensor_chances{0.99, 0.7, 0.8, 0.8, 0.95};
 float penalty = 0;

@@ -45,9 +45,9 @@
     "NextStateAssignments": [
       {
         "AssignmentCode": [
-          " bool success =  __meetPrecondition ;",
-          " state__.pickActionsLeft--;",
-          " if(success)",
+          " bool successful_pick =  __meetPrecondition ;",
+          " state__.pick_cnt++;",
+          " if(successful_pick)",
           " {",
           "    for(int i=0; i < state__.tBallObjects.size(); i++){",
           "        if(state.robotLocation == state.tBallObjects[i]->location)",
@@ -56,8 +56,8 @@
           "        }",
           "    }",
           "}",
-          "__moduleResponse = success ? eSuccess : eFailed;",
-          " __reward = success ? -1 : -2;"
+          "__moduleResponse = successful_pick ? eSuccess : eFailed;",
+          " __reward = successful_pick ? -1 : -2;"
         ]
       }
     ]

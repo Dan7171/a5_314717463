@@ -26,24 +26,31 @@ state_variable: tBall toy4
 code:
 state.toy4.color="red";
 
-state_variable: int pickActionsLeft
+state_variable: int nav_cnt
 code:
-state.pickActionsLeft=6;
+state.nav_cnt=0;
+
+state_variable: int pick_cnt
+code:
+state.pick_cnt=0;
 
 state_variable: int robotLocation 
 code:
 state.robotLocation=LChild;
  
 reward_code:
- if(state.pickActionsLeft < 0)
+if(state.pick_cnt > 6 || state.nav_cnt > 8)
 {
 	__isGoalState =true;
+	__reward=0;
 }
 
-if(!std::any_of(state.tBallObjects.cbegin(), state.tBallObjects.cend(), [&](tBall* t){ return t->location != LChild; }))
-{
-	__isGoalState =true;
+// run on the 4 ball objects (for self I think adding Objects to the end of the type name is somehow making it a list)
+if (state.toy1.location == 4 && state.toy2.location == 4 && state.toy3.location == 4 && state.toy4.location == 4){
+    __isGoalState =true;
+	__reward=0;
 }
+
 
 
 initial_belief:
