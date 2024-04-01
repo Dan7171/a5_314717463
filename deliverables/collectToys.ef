@@ -1,14 +1,8 @@
 project: collect_toys
 horizon: 20
 discount: 0.97
-
 #include <random>
-int sampleDiscrete(const std::vector<float>& weights) {
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::discrete_distribution<> d(weights.begin(), weights.end());
-    return d(gen);
-}
+ 
 
 define_type: tBall
 variable: int location 
@@ -65,32 +59,57 @@ initial_belief:
 
 
 //set locations values
+std::random_device rd;
+std::mt19937 gen(rd());
 vector<float> weightsLocationGreen{0.1,0.05,0.8,0.05};
-
-state.toy1.location = AOSUtils::SampleDiscrete(weightsLocationGreen);
-
 vector<float> weightsLocationBlue{0.7,0.1,0.1,0.1};
-float selectedWeight = weightsLocationBlue[state.toy1.location];
-for(int i=0;i<4;i++){weightsLocationBlue[i]+=selectedWeight/3;}
-weightsLocationBlue[state.toy1.location]=0;
-state.toy2.location = AOSUtils::SampleDiscrete(weightsLocationBlue);
+vector<float> weightsLocationBlack{0,0,0,0};
+
+// green
+std::discrete_distribution<> dist_green(weightsLocationGreen.begin(), weightsLocationGreen.end());
+int selected_loc_green = dist_green(gen);
+state.toy1.location =  selected_loc_green;
+
+//blue
+float compensation = weightsLocationBlue[selected_loc_green]/3;
+for(int i=0;i<4;i++){
+	if(i == selected_loc_green){
+		weightsLocationBlue[i]=0;
+	}
+	else{
+		weightsLocationBlue[i]+= compensation;
+	}
+}
+
+std::discrete_distribution<> dist_blue(weightsLocationBlue.begin(), weightsLocationBlue.end());
+int selected_loc_blue= dist_blue(gen);
+state.toy2.location =  selected_loc_blue;
+
+// black
+for(int i=0;i<4;i++){
+	if (!(i == selected_loc_green || i == selected_loc_blue)){
+		weightsLocationBlack[i]=0.5;
+	}
+}
+std::discrete_distribution<> dist_black(weightsLocationBlack.begin(), weightsLocationBlack.end());
+int selected_loc_black= dist_black(gen);
+state.toy3.location =  selected_loc_black;
+
+// red - takes what left
+for(int i=0;i<4;i++){
+	if (!(i == selected_loc_green || i == selected_loc_blue || i == selected_loc_black)){
+		int selected_loc_red = i;
+		state.toy4.location = selected_loc_red ;
+	}
+}
         
-vector<float> weightsLocationBlack{0.25,0.25,0.25,0.25};
-selectedWeight = weightsLocationBlack[state.toy2.location]+weightsLocationBlack[state.toy1.location];
-for(int i=0;i<4;i++){weightsLocationBlack[i]+=selectedWeight/2;}
-weightsLocationBlack[state.toy1.location]=0;weightsLocationBlack[state.toy2.location]=0;
-state.toy3.location = AOSUtils::SampleDiscrete(weightsLocationBlack);
-        
-vector<float> weightsLocationRed{1.0,1.0,1.0,1.0};
-weightsLocationRed[state.toy1.location]=0;weightsLocationRed[state.toy2.location]=0;;weightsLocationRed[state.toy3.location]=0;
-state.toy4.location = AOSUtils::SampleDiscrete(weightsLocationRed);
-        
+int selectedWeight = 0;
 //set rewards values
 vector<float> rewards{40,20,10,10};
 vector<float> weightsRewardsGreen{0.8,0.05,0.1,0.05};
 int selectedRewardIndex1 = AOSUtils::SampleDiscrete(weightsRewardsGreen);
 state.toy1.reward = rewards[selectedRewardIndex1];
-        
+
 vector<float> weightsRewardsBlue{0.1,0.7,0.1,0.1};
 selectedWeight = weightsRewardsBlue[selectedRewardIndex1];
 for(int i=0;i<4;i++){weightsRewardsBlue[i]+=selectedWeight/3;}
