@@ -10,19 +10,22 @@ parameter: string toyType
 precondition:
 __meetPrecondition = false;
 bool holding = false;
+int hand_loc = 5;
+int baby_loc = 4;
 bool typeMatch = false;
 for(int i=0; i < state.tBallObjects.size(); i++)
 {
-    if(LArm == state.tBallObjects[i]->location)
+    if(hand_loc == state.tBallObjects[i]->location)
 	{ 
 		holding = true; break;
 	}
     if(state.robotLocation == state.tBallObjects[i]->location && state.tBallObjects[i]->color == toyType) typeMatch=true;
 }
-__meetPrecondition = !holding && typeMatch && state.robotLocation != LChild;
+__meetPrecondition = !holding && typeMatch && state.robotLocation != baby_loc;
 violate_penalty: 0
 
 dynamic_model: 
+int hand_loc = 5;
  bool successful_pick =  __meetPrecondition ;
  state__.pick_cnt++;
  if(successful_pick)
@@ -30,7 +33,7 @@ dynamic_model:
 	for(int i=0; i < state__.tBallObjects.size(); i++){
 		if(state.robotLocation == state.tBallObjects[i]->location)
 		{
-			state__.tBallObjects[i]->location = LArm; break;
+			state__.tBallObjects[i]->location = hand_loc; break;
 		}
 	}
 }

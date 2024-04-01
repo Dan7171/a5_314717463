@@ -2,15 +2,17 @@ project: collect_toys
 dynamic_model:
 tBall* toy;
 bool holding = false;
+int hand_loc = 5;
+int baby_loc = 4;
 for(int i=0; i < state__.tBallObjects.size(); i++)
 {
-    if(LArm == (*state__.tBallObjects[i]).location)
+    if(hand_loc == (*state__.tBallObjects[i]).location)
 	{
 		toy = state__.tBallObjects[i];
-		state__.tBallObjects[i]->location = LChild;
+		state__.tBallObjects[i]->location = baby_loc;
 		holding=true; 
 		break;
 	}
 }
 __moduleResponse = holding ? eSuccess : eFailed;
-__reward = !holding ? -3 : (state.robotLocation == LChild ? toy->reward : -1);
+__reward = !holding ? -3 : (state.robotLocation == baby_loc ? toy->reward : -1);
