@@ -104,8 +104,11 @@
   "InitialBeliefStateAssignments": [
     {
       "AssignmentCode": [
+        "",
+        "",
         "//set locations values",
         "vector<float> weightsLocationGreen{0.1,0.05,0.8,0.05};",
+        "",
         "state.toy1.location = AOSUtils::SampleDiscrete(weightsLocationGreen);",
         "",
         "vector<float> weightsLocationBlue{0.7,0.1,0.1,0.1};",
