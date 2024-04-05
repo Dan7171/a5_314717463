@@ -7,16 +7,16 @@
   "PossibleParametersValue": [
     {
       "AssignmentCode": [
-        "__possibleParameters.push_back(std::make_tuple(\"blue\"));",
-        "__possibleParameters.push_back(std::make_tuple(\"red\"));",
-        "__possibleParameters.push_back(std::make_tuple(\"black\"));",
-        "__possibleParameters.push_back(std::make_tuple(\"green\"));"
+        "std::string params[4] = {\"green\", \"blue\", \"black\", \"red\"};",
+        "for(int i=0;i<=4;i++){",
+        "  __possibleParameters.push_back(std::make_tuple(params[i]));",
+        "}"
       ]
     }
   ],
   "GlobalVariableModuleParameters": [
     {
-      "Name": "toyType",
+      "Name": "colorParam",
       "Type": "string"
     }
   ],
@@ -26,18 +26,18 @@
         "AssignmentCode": [
           "__meetPrecondition = false;",
           "bool holding = false;",
-          "int hand_loc = 5;",
-          "int baby_loc = 4;",
+          "int baby_loc = state.baby_loc_const;",
+          "",
           "bool typeMatch = false;",
           "for(int i=0; i < state.tBallObjects.size(); i++)",
           "{",
-          "    if(hand_loc == state.tBallObjects[i]->location)",
+          "    if(state.hand_loc_const == state.tBallObjects[i]->location)",
           "    { ",
           "        holding = true; break;",
           "    }",
-          "    if(state.robotLocation == state.tBallObjects[i]->location && state.tBallObjects[i]->color == toyType) typeMatch=true;",
+          "    if(state.agentLoc == state.tBallObjects[i]->location && state.tBallObjects[i]->color == colorParam) typeMatch=true;",
           "}",
-          "__meetPrecondition = !holding && typeMatch && state.robotLocation != baby_loc;"
+          "__meetPrecondition = !holding && typeMatch && state.agentLoc != baby_loc;"
         ]
       }
     ],
@@ -47,20 +47,20 @@
     "NextStateAssignments": [
       {
         "AssignmentCode": [
-          "int hand_loc = 5;",
-          " bool successful_pick =  __meetPrecondition ;",
-          " state__.pick_cnt++;",
-          " if(successful_pick)",
-          " {",
+          "int fail_reward = -2;",
+          "int success_reward = -1;",
+          "bool successful_pick =  __meetPrecondition ;",
+          "state__.pick_cnt++;",
+          "if(successful_pick){",
           "    for(int i=0; i < state__.tBallObjects.size(); i++){",
-          "        if(state.robotLocation == state.tBallObjects[i]->location)",
+          "        if(state.agentLoc == state.tBallObjects[i]->location)",
           "        {",
-          "            state__.tBallObjects[i]->location = hand_loc; break;",
+          "            state__.tBallObjects[i]->location = state.hand_loc_const; break;",
           "        }",
           "    }",
           "}",
           "__moduleResponse = successful_pick ? eSuccess : eFailed;",
-          " __reward = successful_pick ? -1 : -2;"
+          " __reward = successful_pick ? success_reward: fail_reward;"
         ]
       }
     ]

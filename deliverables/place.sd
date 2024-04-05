@@ -1,18 +1,33 @@
 project: collect_toys 			  
 dynamic_model:
-tBall* toy;
-bool holding = false;
-int hand_loc = 5;
-int baby_loc = 4;
-for(int i=0; i < state__.tBallObjects.size(); i++)
-{
-    if(hand_loc == (*state__.tBallObjects[i]).location)
-	{
-		toy = state__.tBallObjects[i];
-		state__.tBallObjects[i]->location = baby_loc;
-		holding=true; 
-		break;
+int fail_reward = -3;
+int success_reward = -1;
+int n_balls = state__.tBallObjects.size();
+int reward = fail_reward; 
+bool placed_successfully = false;
+int hand_loc = state.hand_loc_const;
+int baby_loc = state.baby_loc_const;
+
+// first we check if robot is even found in placing spot. If not, it cannot place... 
+// if it does, we check if its holding any ball
+// if and only if both conditions apply, we place the relevant ball
+
+int cur_bot_loc = state.agentLoc;
+bool in_placing_spot = (cur_bot_loc == baby_loc);
+
+if(in_placing_spot){
+	for(int i=0; i < n_balls; i++){
+		int ith_ball_loc = state.tBallObjects[i]->location;
+		bool in_hand = ith_ball_loc == hand_loc;
+		if(in_hand){
+			// Place the ball (set ith ball location in next state to  (placed in baby's lap))
+			state__.tBallObjects[i]->location = baby_loc;
+			// placing is done
+			reward=success_reward; // change reward to the winning reward
+			placed_successfully = true;
+			break;
+		}
 	}
 }
-__moduleResponse = holding ? eSuccess : eFailed;
-__reward = !holding ? -3 : (state.robotLocation == baby_loc ? toy->reward : -1);
+__moduleResponse = placed_successfully? eSuccess : eFailed;
+__reward = reward;

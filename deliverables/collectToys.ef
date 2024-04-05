@@ -1,9 +1,36 @@
 project: collect_toys
-horizon: 20
+horizon: 10
 discount: 0.97
 #include <random>
- 
+#include <string>
 
+// random imported to locate balls and set playtimes
+
+//defining state variables:
+
+// constatnt (fake) state variables
+// I put them here so they can be accessible and shared between scripts (otherwise I need to replace code and its a bad habbit)
+state_variable: int baby_loc_const
+code:
+state.baby_loc_const=4;
+state_variable: int hand_loc_const
+code:
+state.hand_loc_const=5;
+
+// non-constant state variables (I know state variables shouldn't contain constant values, its a waste of space. Did it only for technical reasons mentions above)
+// times navigation action was called
+state_variable: int nav_cnt
+code:
+state.nav_cnt=0;
+// times pick action was called
+state_variable: int pick_cnt
+code:
+state.pick_cnt=0;
+state_variable: int agentLoc 
+code:
+state.agentLoc= state.baby_loc_const;
+// initialize the ball object:
+// for each colored ball, the info we need for the planning is ball loacation (tb inisitalized), reward/ play time (tb initialized) 
 define_type: tBall
 variable: int location 
 variable: float reward 
@@ -21,41 +48,34 @@ state_variable: tBall blackBall
 code:
 state.blackBall.color="black";
 
-state_variable: tBall toy4
+state_variable: tBall redBall
 code:
-state.toy4.color="red";
+state.redBall.color="red";
 
-state_variable: int nav_cnt
-code:
-state.nav_cnt=0;
-
-state_variable: int pick_cnt
-code:
-state.pick_cnt=0;
-
-state_variable: int robotLocation 
-code:
-state.robotLocation=4;
- 
+// define reward codes - for myself - we use goal state also in meaning of terminal state of game over
 reward_code:
-if(state.pick_cnt > 6 || state.nav_cnt > 8)
+int max_pick = 6;
+int max_nav = 8;
+int no_reward = 0;
+if(state.pick_cnt > max_pick || state.nav_cnt > max_nav)
 {
 	__isGoalState =true;
-	__reward=0;
+	__reward= no_reward;
 }
 
 // run on the 4 ball objects (for self I think adding Objects to the end of the type name is somehow making it a list)
-if (state.greenBall.location == 4 && state.blueBall.location == 4 && state.blackBall.location == 4 && state.toy4.location == 4){
+bool all_placed = (state.greenBall.location == 4 && state.blueBall.location == 4 && state.blackBall.location == 4 && state.redBall.location == 4);
+if (all_placed){
     __isGoalState =true;
-	__reward=0;
+	__reward=no_reward;
 }
 
 
-
+// in initial belief  - randomly sample locations and playtimes for each ball 
 initial_belief:
 
+//initialize *locations*
 
-//sample ball locations
 std::random_device rd;
 std::mt19937 gen(rd());
 vector<float> green_loc_w{0.1,0.05,0.8,0.05};
@@ -92,15 +112,15 @@ std::discrete_distribution<> loc_dist_black(black_loc_w.begin(), black_loc_w.end
 int selected_loc_black= loc_dist_black(gen);
 state.blackBall.location =  selected_loc_black;
 
-// red - takes what left
+// red - takes the last location left 
 for(int i=0;i<4;i++){
 	if (!(i == selected_loc_green || i == selected_loc_blue || i == selected_loc_black)){
 		int selected_loc_red = i;
-		state.toy4.location = selected_loc_red ;
+		state.redBall.location = selected_loc_red ;
 	}
 }
-        
-// sample ball rewards (playtimes)
+
+//initialize *playtimes* (rewards)
 
 //set playtime selection chance for each ball (playtime is the reward)
 vector<float> rewards{40,20,15,15};
@@ -139,11 +159,11 @@ int selected_pt_idx_black= pt_dist_black(gen);
 state.blackBall.reward =  rewards[selected_pt_idx_black];
 
 // red
-// red - takes what left
+// red - takes what left (as before)
 for(int i=0;i<4;i++){
 	if (!(i == selected_pt_idx_green || i == selected_pt_idx_blue || i == selected_pt_idx_black)){
 		int selected_pt_idx_red = i;
-		state.toy4.reward= rewards[selected_pt_idx_red] ;
+		state.redBall.reward= rewards[selected_pt_idx_red] ;
 	}
 }
 

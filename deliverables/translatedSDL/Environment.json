@@ -5,7 +5,7 @@
     "Type": "Environment"
   },
   "EnvironmentGeneral": {
-    "Horizon": 20,
+    "Horizon": 10,
     "Discount": 0.97
   },
   "GlobalVariableTypes": [
@@ -33,6 +33,46 @@
   ],
   "GlobalVariablesDeclaration": [
     {
+      "Name": "baby_loc_const",
+      "Type": "int",
+      "DefaultCode": "state.baby_loc_const=4;",
+      "IsArray": false,
+      "IsActionParameterValue": false,
+      "ML_IgnoreVariable": false
+    },
+    {
+      "Name": "hand_loc_const",
+      "Type": "int",
+      "DefaultCode": "state.hand_loc_const=5;",
+      "IsArray": false,
+      "IsActionParameterValue": false,
+      "ML_IgnoreVariable": false
+    },
+    {
+      "Name": "nav_cnt",
+      "Type": "int",
+      "DefaultCode": "state.nav_cnt=0;",
+      "IsArray": false,
+      "IsActionParameterValue": false,
+      "ML_IgnoreVariable": false
+    },
+    {
+      "Name": "pick_cnt",
+      "Type": "int",
+      "DefaultCode": "state.pick_cnt=0;",
+      "IsArray": false,
+      "IsActionParameterValue": false,
+      "ML_IgnoreVariable": false
+    },
+    {
+      "Name": "agentLoc",
+      "Type": "int",
+      "DefaultCode": "state.agentLoc= state.baby_loc_const;",
+      "IsArray": false,
+      "IsActionParameterValue": false,
+      "ML_IgnoreVariable": false
+    },
+    {
       "Name": "greenBall",
       "Type": "tBall",
       "DefaultCode": "state.greenBall.color=\"green\";",
@@ -57,33 +97,9 @@
       "ML_IgnoreVariable": false
     },
     {
-      "Name": "toy4",
+      "Name": "redBall",
       "Type": "tBall",
-      "DefaultCode": "state.toy4.color=\"red\";",
-      "IsArray": false,
-      "IsActionParameterValue": false,
-      "ML_IgnoreVariable": false
-    },
-    {
-      "Name": "nav_cnt",
-      "Type": "int",
-      "DefaultCode": "state.nav_cnt=0;",
-      "IsArray": false,
-      "IsActionParameterValue": false,
-      "ML_IgnoreVariable": false
-    },
-    {
-      "Name": "pick_cnt",
-      "Type": "int",
-      "DefaultCode": "state.pick_cnt=0;",
-      "IsArray": false,
-      "IsActionParameterValue": false,
-      "ML_IgnoreVariable": false
-    },
-    {
-      "Name": "robotLocation",
-      "Type": "int",
-      "DefaultCode": "state.robotLocation=4;",
+      "DefaultCode": "state.redBall.color=\"red\";",
       "IsArray": false,
       "IsActionParameterValue": false,
       "ML_IgnoreVariable": false
@@ -93,8 +109,8 @@
     {
       "AssignmentCode": [
         "",
+        "//initialize *locations*",
         "",
-        "//sample ball locations",
         "std::random_device rd;",
         "std::mt19937 gen(rd());",
         "vector<float> green_loc_w{0.1,0.05,0.8,0.05};",
@@ -131,15 +147,15 @@
         "int selected_loc_black= loc_dist_black(gen);",
         "state.blackBall.location =  selected_loc_black;",
         "",
-        "// red - takes what left",
+        "// red - takes the last location left ",
         "for(int i=0;i<4;i++){",
         "    if (!(i == selected_loc_green || i == selected_loc_blue || i == selected_loc_black)){",
         "        int selected_loc_red = i;",
-        "        state.toy4.location = selected_loc_red ;",
+        "        state.redBall.location = selected_loc_red ;",
         "    }",
         "}",
-        "        ",
-        "// sample ball rewards (playtimes)",
+        "",
+        "//initialize *playtimes* (rewards)",
         "",
         "//set playtime selection chance for each ball (playtime is the reward)",
         "vector<float> rewards{40,20,15,15};",
@@ -178,11 +194,11 @@
         "state.blackBall.reward =  rewards[selected_pt_idx_black];",
         "",
         "// red",
-        "// red - takes what left",
+        "// red - takes what left (as before)",
         "for(int i=0;i<4;i++){",
         "    if (!(i == selected_pt_idx_green || i == selected_pt_idx_blue || i == selected_pt_idx_black)){",
         "        int selected_pt_idx_red = i;",
-        "        state.toy4.reward= rewards[selected_pt_idx_red] ;",
+        "        state.redBall.reward= rewards[selected_pt_idx_red] ;",
         "    }",
         "}",
         "",
@@ -196,20 +212,24 @@
       "StateFunctionCode": [
         {
           "AssignmentCode": [
-            "if(state.pick_cnt > 6 || state.nav_cnt > 8)",
+            "int max_pick = 6;",
+            "int max_nav = 8;",
+            "int no_reward = 0;",
+            "if(state.pick_cnt > max_pick || state.nav_cnt > max_nav)",
             "{",
             "    __isGoalState =true;",
-            "    __reward=0;",
+            "    __reward= no_reward;",
             "}",
             "",
             "// run on the 4 ball objects (for self I think adding Objects to the end of the type name is somehow making it a list)",
-            "if (state.greenBall.location == 4 && state.blueBall.location == 4 && state.blackBall.location == 4 && state.toy4.location == 4){",
+            "bool all_placed = (state.greenBall.location == 4 && state.blueBall.location == 4 && state.blackBall.location == 4 && state.redBall.location == 4);",
+            "if (all_placed){",
             "    __isGoalState =true;",
-            "    __reward=0;",
+            "    __reward=no_reward;",
             "}",
             "",
             "",
-            ""
+            "// in initial belief  - randomly sample locations and playtimes for each ball "
           ]
         }
       ]
