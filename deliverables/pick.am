@@ -1,7 +1,7 @@
 project: collect_toys 
 
 local_variable: toy_type_name
-action_parameter: colorParam
+action_parameter: toyType
 
 local_variable: skillSuccess
 imports: from: std_msgs.msg import: Bool

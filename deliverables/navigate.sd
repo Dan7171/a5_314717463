@@ -1,7 +1,7 @@
 project: collect_toys
 
 // def parameters & valid parameter assignments
-parameter: int goalLocationParam
+parameter: int oDestination
 available_parameters_code:
 __possibleParameters.push_back(std::make_tuple(0));
 __possibleParameters.push_back(std::make_tuple(1));
@@ -15,13 +15,13 @@ state__.nav_cnt++;
 vector<float> success_chances{0.5, 0.7, 0.8, 0.85, 0.95};
 vector<float> accurate_sensor_chances{0.99, 0.7, 0.8, 0.8, 0.95};
 float penalty = 0;
-bool leaving_self_location = state.agentLoc != goalLocationParam;
-bool is_successful_nav = (leaving_self_location && AOS.Bernoulli(success_chances[goalLocationParam])) ? 1: 0;
+bool leaving_self_location = state.agentLoc != oDestination;
+bool is_successful_nav = (leaving_self_location && AOS.Bernoulli(success_chances[oDestination])) ? 1: 0;
 // penalty of -1 if navigation failed
 float nav_penalty = is_successful_nav ? 0: -1;
-bool accurate_sensor = AOS.Bernoulli(accurate_sensor_chances[goalLocationParam]);
+bool accurate_sensor = AOS.Bernoulli(accurate_sensor_chances[oDestination]);
 // real location after action call - moving only if success
-state__.agentLoc = is_successful_nav ? goalLocationParam : state.agentLoc;
+state__.agentLoc = is_successful_nav ? oDestination : state.agentLoc;
 bool true_success = is_successful_nav && accurate_sensor;
 bool false_failure = !is_successful_nav && !accurate_sensor;
 __moduleResponse = true_success || false_failure ? eSuccess : eFailed;

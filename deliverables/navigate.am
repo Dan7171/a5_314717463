@@ -1,7 +1,7 @@
 project: collect_toys 
 
 local_variable: destination
-action_parameter: goalLocationParam
+action_parameter: oDestination
 
 local_variable: skillSuccess_
 imports: from: std_msgs.msg import: Bool

@@ -7,16 +7,16 @@
   "PossibleParametersValue": [
     {
       "AssignmentCode": [
-        "__possibleParameters.push_back(std::make_tuple(\"green\"));",
         "__possibleParameters.push_back(std::make_tuple(\"blue\"));",
-        "__possibleParameters.push_back(std::make_tuple( \"black\"));",
-        "__possibleParameters.push_back(std::make_tuple(\"red\"));"
+        "__possibleParameters.push_back(std::make_tuple(\"red\"));",
+        "__possibleParameters.push_back(std::make_tuple(\"black\"));",
+        "__possibleParameters.push_back(std::make_tuple(\"green\"));"
       ]
     }
   ],
   "GlobalVariableModuleParameters": [
     {
-      "Name": "colorParam",
+      "Name": "toyType",
       "Type": "string"
     }
   ],
@@ -27,7 +27,6 @@
           "__meetPrecondition = false;",
           "bool holding = false;",
           "int baby_loc = state.baby_loc_const;",
-          "",
           "bool typeMatch = false;",
           "for(int i=0; i < state.tBallObjects.size(); i++)",
           "{",
@@ -35,7 +34,7 @@
           "    { ",
           "        holding = true; break;",
           "    }",
-          "    if(state.agentLoc == state.tBallObjects[i]->location && state.tBallObjects[i]->color == colorParam) typeMatch=true;",
+          "    if(state.agentLoc == state.tBallObjects[i]->location && state.tBallObjects[i]->color == toyType) typeMatch=true;",
           "}",
           "__meetPrecondition = !holding && typeMatch && state.agentLoc != baby_loc;"
         ]
@@ -47,11 +46,11 @@
     "NextStateAssignments": [
       {
         "AssignmentCode": [
-          "int fail_reward = -2;",
-          "int success_reward = -1;",
-          "bool successful_pick =  __meetPrecondition ;",
-          "state__.pick_cnt++;",
-          "if(successful_pick){",
+          "",
+          " bool successful_pick =  __meetPrecondition ;",
+          " state__.pick_cnt++;",
+          " if(successful_pick)",
+          " {",
           "    for(int i=0; i < state__.tBallObjects.size(); i++){",
           "        if(state.agentLoc == state.tBallObjects[i]->location)",
           "        {",
@@ -60,7 +59,7 @@
           "    }",
           "}",
           "__moduleResponse = successful_pick ? eSuccess : eFailed;",
-          " __reward = successful_pick ? success_reward: fail_reward;"
+          " __reward = successful_pick ? -1 : -2;"
         ]
       }
     ]

@@ -47,7 +47,7 @@
   "LocalVariablesInitialization": [
     {
       "InputLocalVariable": "destination",
-      "FromGlobalVariable": "goalLocationParam"
+      "FromGlobalVariable": "oDestination"
     },
     {
       "FromROSServiceResponse": true,

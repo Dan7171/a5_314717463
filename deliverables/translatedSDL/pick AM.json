@@ -47,7 +47,7 @@
   "LocalVariablesInitialization": [
     {
       "InputLocalVariable": "toy_type_name",
-      "FromGlobalVariable": "colorParam"
+      "FromGlobalVariable": "toyType"
     },
     {
       "FromROSServiceResponse": true,
