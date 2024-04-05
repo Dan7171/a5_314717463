@@ -7,10 +7,10 @@
   "PossibleParametersValue": [
     {
       "AssignmentCode": [
-        "std::string params[4] = {\"green\", \"blue\", \"black\", \"red\"};",
-        "for(int i=0;i<=4;i++){",
-        "  __possibleParameters.push_back(std::make_tuple(params[i]));",
-        "}"
+        "__possibleParameters.push_back(std::make_tuple(\"green\"));",
+        "__possibleParameters.push_back(std::make_tuple(\"blue\"));",
+        "__possibleParameters.push_back(std::make_tuple( \"black\"));",
+        "__possibleParameters.push_back(std::make_tuple(\"red\"));"
       ]
     }
   ],
