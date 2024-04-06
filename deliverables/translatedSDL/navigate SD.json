@@ -25,6 +25,31 @@
     "NextStateAssignments": [
       {
         "AssignmentCode": [
+          "",
+          " cout << \"*Navigate started.\" << endl",
+          "         <<\"action cnt=\"",
+          "         <<(state.action_cnt_dbg)",
+          "         <<\"pick_cnt=\"",
+          "         <<(state.pick_cnt)",
+          "         <<\"nav_cnt=\"",
+          "         <<(state.nav_cnt)",
+          "         <<\"total rewards=\"",
+          "         <<(state.episode_total_rewards_dbg)",
+          "         << \"real location = \"",
+          "         << (state.agentLoc) << \" / \"",
+          "         << \"ball locations=\"",
+          "         << (state.tBallObjects[0]->location)",
+          "         << (state.tBallObjects[1]->location)",
+          "         << (state.tBallObjects[2]->location)",
+          "         << (state.tBallObjects[3]->location)",
+          "         << endl;",
+          "         ",
+          " cout << \"Navigate to \"",
+          "        <<(oDestination)",
+          "         << endl;",
+          "         ",
+          "//debug",
+          "state__.action_cnt_dbg = state.action_cnt_dbg + 1;",
           "state__.nav_cnt++;",
           "vector<float> success_chances{0.5, 0.7, 0.8, 0.85, 0.95};",
           "vector<float> accurate_sensor_chances{0.99, 0.7, 0.8, 0.8, 0.95};",
@@ -40,8 +65,11 @@
           "bool false_failure = !is_successful_nav && !accurate_sensor;",
           "__moduleResponse = true_success || false_failure ? eSuccess : eFailed;",
           "",
+          "",
           "// nav total reward",
-          "__reward =  -1 + nav_penalty;"
+          "int r = -1 + nav_penalty;",
+          "__reward =  r;",
+          "state__.episode_total_rewards_dbg = state.episode_total_rewards_dbg + r;"
         ]
       }
     ]

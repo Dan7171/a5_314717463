@@ -25,6 +25,32 @@ violate_penalty: 0
 
 dynamic_model: 
 
+ cout << "*Pick started." << endl
+         <<"action cnt="
+		 <<(state.action_cnt_dbg)
+		 <<"pick_cnt="
+         <<(state.pick_cnt)
+         <<"nav_cnt="
+         <<(state.nav_cnt)
+		 <<"total rewards="
+		 <<(state.episode_total_rewards_dbg)
+		 << "real location = "
+         << (state.agentLoc) << " / "
+		 << "ball locations="
+		 << (state.tBallObjects[0]->location)
+         << (state.tBallObjects[1]->location)
+         << (state.tBallObjects[2]->location)
+         << (state.tBallObjects[3]->location)
+		 << endl;
+ cout << "Robot selected Picking:   "
+		<<(toyType)
+		 << endl; 
+		 
+//debug
+state__.action_cnt_dbg = state.action_cnt_dbg + 1;
+
+ 
+ 
  bool successful_pick =  __meetPrecondition ;
  state__.pick_cnt++;
  if(successful_pick)
@@ -38,6 +64,5 @@ dynamic_model:
 }
 __moduleResponse = successful_pick ? eSuccess : eFailed;
  __reward = successful_pick ? -1 : -2;
- 
- 
+ state__.episode_total_rewards_dbg = state.episode_total_rewards_dbg + __reward;
  

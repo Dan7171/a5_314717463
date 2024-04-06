@@ -49,6 +49,22 @@
       "ML_IgnoreVariable": false
     },
     {
+      "Name": "action_cnt_dbg",
+      "Type": "int",
+      "DefaultCode": "state.action_cnt_dbg=0;",
+      "IsArray": false,
+      "IsActionParameterValue": false,
+      "ML_IgnoreVariable": false
+    },
+    {
+      "Name": "episode_total_rewards_dbg",
+      "Type": "int",
+      "DefaultCode": "state.episode_total_rewards_dbg=0;",
+      "IsArray": false,
+      "IsActionParameterValue": false,
+      "ML_IgnoreVariable": false
+    },
+    {
       "Name": "nav_cnt",
       "Type": "int",
       "DefaultCode": "state.nav_cnt=0;",

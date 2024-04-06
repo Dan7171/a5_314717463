@@ -8,10 +8,31 @@
     "NextStateAssignments": [
       {
         "AssignmentCode": [
+          "",
+          " cout << \"*Place started.\" << endl",
+          "         <<\"action cnt=\"",
+          "         <<(state.action_cnt_dbg)",
+          "         <<\"pick_cnt=\"",
+          "         <<(state.pick_cnt)",
+          "         <<\"nav_cnt=\"",
+          "         <<(state.nav_cnt)",
+          "         <<\"total rewards=\"",
+          "         <<(state.episode_total_rewards_dbg)",
+          "         << \"real location = \"",
+          "         << (state.agentLoc) << \" / \"",
+          "         << \"ball locations=\"",
+          "         << (state.tBallObjects[0]->location)",
+          "         << (state.tBallObjects[1]->location)",
+          "         << (state.tBallObjects[2]->location)",
+          "         << (state.tBallObjects[3]->location)",
+          "         << endl;",
+          "//debug",
+          "state__.action_cnt_dbg = state.action_cnt_dbg + 1;",
+          "",
           "int fail_reward = -3;",
           "int success_reward = -1;",
           "int n_balls = state__.tBallObjects.size();",
-          "int reward = fail_reward; ",
+          "int r = fail_reward; ",
           "bool placed_successfully = false;",
           "int hand_loc = state.hand_loc_const;",
           "int baby_loc = state.baby_loc_const;",
@@ -31,14 +52,15 @@
           "            // Place the ball (set ith ball location in next state to  (placed in baby's lap))",
           "            state__.tBallObjects[i]->location = baby_loc;",
           "            // placing is done",
-          "            reward=success_reward; // change reward to the winning reward",
+          "            r=success_reward; // change reward to the winning reward",
           "            placed_successfully = true;",
           "            break;",
           "        }",
           "    }",
           "}",
           "__moduleResponse = placed_successfully? eSuccess : eFailed;",
-          "__reward = reward;"
+          "__reward = r;",
+          "state__.episode_total_rewards_dbg = state.episode_total_rewards_dbg + r;"
         ]
       }
     ]
