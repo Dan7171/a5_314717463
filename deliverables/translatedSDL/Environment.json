@@ -5,7 +5,7 @@
     "Type": "Environment"
   },
   "EnvironmentGeneral": {
-    "Horizon": 10,
+    "Horizon": 15,
     "Discount": 0.97
   },
   "GlobalVariableTypes": [
