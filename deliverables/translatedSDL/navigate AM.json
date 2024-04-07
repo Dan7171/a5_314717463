@@ -9,7 +9,7 @@
     "ResponseRules": [
       {
         "Response": "eSuccess",
-        "ConditionCodeWithLocalVariables": " skillSuccess_"
+        "ConditionCodeWithLocalVariables": " navigateSkillSuccess"
       },
       {
         "Response": "eFailed",
@@ -39,22 +39,22 @@
       "ServiceParameters": [
         {
           "ServiceFieldName": "location",
-          "AssignServiceFieldCode": "destination"
+          "AssignServiceFieldCode": "navToLocLocalVar"
         }
       ]
     }
   },
   "LocalVariablesInitialization": [
     {
-      "InputLocalVariable": "destination",
+      "InputLocalVariable": "navToLocLocalVar",
       "FromGlobalVariable": "navToLoc"
     },
     {
       "FromROSServiceResponse": true,
-      "LocalVariableName": "skillSuccess_",
+      "LocalVariableName": "navigateSkillSuccess",
       "VariableType": "bool",
       "AssignmentCode": [
-        "skillSuccess_=__input.success"
+        "navigateSkillSuccess=__input.success"
       ],
       "ImportCode": [
         {

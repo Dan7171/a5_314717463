@@ -39,14 +39,14 @@
       "ServiceParameters": [
         {
           "ServiceFieldName": "toy_type",
-          "AssignServiceFieldCode": "toy_type_name"
+          "AssignServiceFieldCode": "pick_toy_type_name"
         }
       ]
     }
   },
   "LocalVariablesInitialization": [
     {
-      "InputLocalVariable": "toy_type_name",
+      "InputLocalVariable": "pick_toy_type_name",
       "FromGlobalVariable": "chosenColorParam"
     },
     {

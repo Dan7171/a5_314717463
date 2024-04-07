@@ -1,14 +1,14 @@
 project: collect_toys 
 
-local_variable: destination
+local_variable: navToLocLocalVar
 action_parameter: navToLoc
 
-local_variable: skillSuccess_
+local_variable: navigateSkillSuccess
 imports: from: std_msgs.msg import: Bool
 type: bool
 from_ros_reservice_response: true  
 code: 
-skillSuccess_=__input.success
+navigateSkillSuccess=__input.success
  
 module_activation: ros_service
 imports: from: geometry_msgs.msg import: Point
@@ -17,10 +17,10 @@ path: /navigate
 srv: navigate
 parameter: location
 code:
-destination
+navToLocLocalVar
 
 response: eSuccess
-response_rule: skillSuccess_
+response_rule: navigateSkillSuccess
 
 response: eFailed
 response_rule: True

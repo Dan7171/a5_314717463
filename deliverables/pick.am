@@ -1,6 +1,6 @@
 project: collect_toys 
 
-local_variable: toy_type_name
+local_variable: pick_toy_type_name
 action_parameter: chosenColorParam
 
 local_variable: skillSuccess
@@ -17,7 +17,7 @@ path: /pick
 srv: pick
 parameter: toy_type
 code:
-toy_type_name
+pick_toy_type_name
 
 response: eSuccess
 response_rule: skillSuccess
