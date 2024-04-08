@@ -24,7 +24,7 @@
     "NextStateAssignments": [
       {
         "AssignmentCode": [
-          "",
+          "/*",
           " cout << \"*Pick started.\" << endl",
           "         <<\"action cnt=\"",
           "         <<(state.action_cnt_dbg)",
@@ -45,7 +45,7 @@
           " cout << \"Robot selected Picking:   \"",
           "        <<(chosenColorParam)",
           "         << endl; ",
-          "         ",
+          "*/     ",
           "//debug",
           "state__.action_cnt_dbg = state.action_cnt_dbg + 1;",
           " ",

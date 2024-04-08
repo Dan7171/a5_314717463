@@ -9,7 +9,7 @@ __possibleParameters.push_back(std::make_tuple("green"));
 parameter: string chosenColorParam  
 
 dynamic_model: 
-
+/*
  cout << "*Pick started." << endl
          <<"action cnt="
 		 <<(state.action_cnt_dbg)
@@ -30,7 +30,7 @@ dynamic_model:
  cout << "Robot selected Picking:   "
 		<<(chosenColorParam)
 		 << endl; 
-		 
+*/	 
 //debug
 state__.action_cnt_dbg = state.action_cnt_dbg + 1;
  
