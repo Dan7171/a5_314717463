@@ -1,11 +1,11 @@
 project: example 
  
-local_variable: skillSuccess3
+local_variable: placeSkillSuccess
 imports: from: std_msgs.msg import: Bool
 type: bool
 from_ros_reservice_response: true  
 code: 
-skillSuccess3=__input.success
+placeSkillSuccess=__input.success
  
 module_activation: ros_service
 imports: from: geometry_msgs.msg import: Point
@@ -14,7 +14,7 @@ path: /place
 srv: place 
 
 response: eSuccess
-response_rule: skillSuccess3
+response_rule: placeSkillSuccess
 
 response: eFailed
 response_rule: True

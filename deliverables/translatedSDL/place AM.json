@@ -9,7 +9,7 @@
     "ResponseRules": [
       {
         "Response": "eSuccess",
-        "ConditionCodeWithLocalVariables": " skillSuccess3"
+        "ConditionCodeWithLocalVariables": " placeSkillSuccess"
       },
       {
         "Response": "eFailed",
@@ -42,10 +42,10 @@
   "LocalVariablesInitialization": [
     {
       "FromROSServiceResponse": true,
-      "LocalVariableName": "skillSuccess3",
+      "LocalVariableName": "placeSkillSuccess",
       "VariableType": "bool",
       "AssignmentCode": [
-        "skillSuccess3=__input.success"
+        "placeSkillSuccess=__input.success"
       ],
       "ImportCode": [
         {
