@@ -1,0 +1,89 @@
+1.debugging - based on zoom lesson
+
+1. In terminal 1: (server)
+~/AOS/AOS-WebAPI/bin/Debug/net6.0/WebApiCSharp // fire up server
+2. In terminal 2: (gui)
+
+# if I debug:
+cd ~/AOS/AOS-GUI-master
+dan@dan:~/AOS/AOS-GUI-master$ bash run_gui.bash 
+wait...
+intergation requests -> initialize project request
+a. plp directory - choose the dir where all the am, sd, ef are (/home/dan/AOS/AOS-experiments/Tutorial/The paper example SDL or /home/dan/a5_314717463/deliverables)
+b. debug on: true
+c. beflief state particle to save - 20
+d. manual control - true
+e. is internal simulation - true = just aos, No gazebo... false = with gazebo.After debugging model enough, set to false to see the run...
+f. verbosity 4
+
+click send request and wait....
+close and go back
+got to get execution outcome request -> set the same number as in beflief state particle to save
+go to logs if you want to see the rewards and full tracking of these actions
+
+
+
+select the directory as the plp
+
+WORK PLAN:
+1. change mostly only the the sd and ef files and use am files just as templates. (see small changes as detailed in exapmle)
+2. debug scripts with gui - is internal = True until I am happy with results
+3. change is internal to false and run - now we are checking gazebo (checking the am file)
+4. if all good I am done 
+
+
+1.4.24 - debug code with vsc:
+use postman
+cd ./AOS
+run: postman
+go to history and use one of the previous requests from http://localhost:5000/InitializeProject
+In "body": 
+set the file:
+{ 
+    "PLPsDirectoryPath":"/home/dan/a5_314717463/deliverables",
+    "RunWithoutRebuild":false,
+    "OnlyGenerateCode":true,
+    "RosTarget":
+    {
+        "WorkspaceDirectortyPath":"/home/dan/catkin_ws",
+        "TargetProjectLaunchFile":"/home/dan/catkin_ws/src/simple_navigation_goals/launch/servers.launch",
+        "RosTargetProjectPackages":["simple_navigation_goals"],
+        "TargetProjectInitializationTimeInSeconds":15
+    },
+    "SolverConfiguration":{ 
+        "NumOfParticles":20000,
+        "ActionsToSimulate":[],
+        "IsInternalSimulation":true,
+        "ManualControl":true,
+        "PlanningTimePerMoveInSeconds":2,
+        "NumOfBeliefStateParticlesToSaveInDB":20, 
+        "Verbosity":1,
+        "UseML":false,
+        "RolloutsCount":70,
+        "SimulateByMdpRate":0.0
+        },
+    "MiddlewareConfiguration":{
+        "DebugOn":true
+         
+    }
+}
+
+and click "send"
+
+
+Now on another terminal:
+cd /home/dan/AOS/AOS-Solver
+run: code 
+wait...
+in vsc - bottom down click build (building the project as the gui does automatically)
+wait for: [build] Build finished with exit code 0 in stdout...
+go to AOS-Solver/examples/cpp_models/src//%my project name%.cpp - this is the model code
+
+set breakpoint where you want in this file
+run debug (bug symbol)
+
+
+
+
+
+
