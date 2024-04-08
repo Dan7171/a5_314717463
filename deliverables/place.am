@@ -1,22 +1,25 @@
 project: example 
- 
+
+// possible responses
+response: eSuccess
+response_rule: placeSkillSuccess
+response: eFailed
+response_rule: True
+
+
+// next parameters are determined by the relevant ros service of assignment3 
+module_activation: ros_service
+imports: from: geometry_msgs.msg import: Point
+imports: from: task3_env.srv import: placeResponse, place 
+path: /place
+srv: place 
+    
 local_variable: placeSkillSuccess
 imports: from: std_msgs.msg import: Bool
 type: bool
 from_ros_reservice_response: true  
 code: 
-placeSkillSuccess=__input.success
- 
-module_activation: ros_service
-imports: from: geometry_msgs.msg import: Point
-imports: from: task3_env.srv import: place, placeResponse
-path: /place
-srv: place 
+ros_service_response = __input.success
+placeSkillSuccess = ros_service_response
 
-response: eSuccess
-response_rule: placeSkillSuccess
 
-response: eFailed
-response_rule: True
-
-     

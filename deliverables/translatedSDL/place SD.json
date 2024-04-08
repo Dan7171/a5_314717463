@@ -58,6 +58,7 @@
           "        }",
           "    }",
           "}",
+          "",
           "__moduleResponse = placed_successfully? eSuccess : eFailed;",
           "__reward = r;",
           "state__.episode_total_rewards_dbg = state.episode_total_rewards_dbg + r;"

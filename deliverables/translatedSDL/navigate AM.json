@@ -29,8 +29,8 @@
         {
           "From": "task3_env.srv",
           "Import": [
-            "navigate",
-            "navigateResponse"
+            "navigateResponse",
+            "navigate"
           ]
         }
       ],
@@ -39,14 +39,14 @@
       "ServiceParameters": [
         {
           "ServiceFieldName": "location",
-          "AssignServiceFieldCode": "navToLocLocalVar"
+          "AssignServiceFieldCode": "# location_to_ros_service is the value to set to location parameter"
         }
       ]
     }
   },
   "LocalVariablesInitialization": [
     {
-      "InputLocalVariable": "navToLocLocalVar",
+      "InputLocalVariable": "location_to_ros_service",
       "FromGlobalVariable": "navToLoc"
     },
     {
@@ -54,7 +54,8 @@
       "LocalVariableName": "navigateSkillSuccess",
       "VariableType": "bool",
       "AssignmentCode": [
-        "navigateSkillSuccess=__input.success"
+        "ros_service_response = __input.success",
+        "navigateSkillSuccess=ros_service_response"
       ],
       "ImportCode": [
         {

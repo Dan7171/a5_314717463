@@ -29,8 +29,8 @@
         {
           "From": "task3_env.srv",
           "Import": [
-            "place",
-            "placeResponse"
+            "placeResponse",
+            "place"
           ]
         }
       ],
@@ -45,7 +45,8 @@
       "LocalVariableName": "placeSkillSuccess",
       "VariableType": "bool",
       "AssignmentCode": [
-        "placeSkillSuccess=__input.success"
+        "ros_service_response = __input.success",
+        "placeSkillSuccess = ros_service_response"
       ],
       "ImportCode": [
         {

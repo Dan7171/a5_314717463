@@ -39,14 +39,14 @@
       "ServiceParameters": [
         {
           "ServiceFieldName": "toy_type",
-          "AssignServiceFieldCode": "pick_toy_type_name"
+          "AssignServiceFieldCode": "# this value will be set to toy_type and will be sent to ros service"
         }
       ]
     }
   },
   "LocalVariablesInitialization": [
     {
-      "InputLocalVariable": "pick_toy_type_name",
+      "InputLocalVariable": "toy_type_to_ros_service",
       "FromGlobalVariable": "chosenColorParam"
     },
     {
@@ -54,7 +54,8 @@
       "LocalVariableName": "pickSkillSuccess",
       "VariableType": "bool",
       "AssignmentCode": [
-        "pickSkillSuccess=__input.success"
+        "ros_service_response = __input.success",
+        "pickSkillSuccess=ros_service_response"
       ],
       "ImportCode": [
         {

@@ -1,14 +1,12 @@
 project: example
-local_variable: pick_toy_type_name
-action_parameter: chosenColorParam
 
-local_variable: pickSkillSuccess
-imports: from: std_msgs.msg import: Bool
-type: bool
-from_ros_reservice_response: true  
-code: 
-pickSkillSuccess=__input.success
- 
+// possible responses
+response: eSuccess
+response_rule: pickSkillSuccess
+response: eFailed
+response_rule: True
+
+// next parameters are determined by the relevant ros service of assignment3 
 module_activation: ros_service
 imports: from: geometry_msgs.msg import: Point
 imports: from: task3_env.srv import: pick, pickResponse
@@ -16,12 +14,19 @@ path: /pick
 srv: pick
 parameter: toy_type
 code:
-pick_toy_type_name
+# this value will be set to toy_type and will be sent to ros service
+toy_type_to_ros_service
+local_variable: toy_type_to_ros_service
+action_parameter: chosenColorParam
 
-response: eSuccess
-response_rule: pickSkillSuccess
+local_variable: pickSkillSuccess
+imports: from: std_msgs.msg import: Bool
+type: bool
+from_ros_reservice_response: true  
+code: 
+ros_service_response = __input.success
+pickSkillSuccess=ros_service_response
 
-response: eFailed
-response_rule: True
+
 
    

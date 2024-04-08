@@ -1,28 +1,35 @@
 project: example 
+
 // possible responses
 response: eSuccess
 response_rule: navigateSkillSuccess
 response: eFailed
 response_rule: True
 
+// next parameters are determined by the relevant ros service of assignment3 
 module_activation: ros_service
 imports: from: geometry_msgs.msg import: Point
-imports: from: task3_env.srv import: navigate, navigateResponse
+imports: from: task3_env.srv import: navigateResponse, navigate
 path: /navigate
 srv: navigate
 parameter: location
 code:
-navToLocLocalVar
+# location_to_ros_service is the value to set to location parameter
+location_to_ros_service
 
-local_variable: navToLocLocalVar
-action_parameter: navToLoc
+//local variables
+// alias in this file
+local_variable: location_to_ros_service
+// from sd file
+action_parameter: navToLoc 
 
 local_variable: navigateSkillSuccess
 imports: from: std_msgs.msg import: Bool
 type: bool
 from_ros_reservice_response: true  
 code: 
-navigateSkillSuccess=__input.success
+ros_service_response = __input.success
+navigateSkillSuccess=ros_service_response
  
 
 
