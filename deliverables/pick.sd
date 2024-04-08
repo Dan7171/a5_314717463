@@ -1,4 +1,4 @@
-project: collect_toys 			
+project: example 			
   
  available_parameters_code:
 __possibleParameters.push_back(std::make_tuple("blue"));

@@ -1,4 +1,4 @@
-project: collect_toys
+project: example
 
 // def parameters & valid parameter assignments
 parameter: int navToLoc

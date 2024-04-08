@@ -1,4 +1,4 @@
-project: collect_toys 
+project: example 
  
 local_variable: skillSuccess3
 imports: from: std_msgs.msg import: Bool

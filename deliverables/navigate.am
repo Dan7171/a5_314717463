@@ -1,4 +1,4 @@
-project: collect_toys 
+project: example 
 
 local_variable: navToLocLocalVar
 action_parameter: navToLoc

@@ -1,5 +1,4 @@
-project: collect_toys 
-
+project: example
 local_variable: pick_toy_type_name
 action_parameter: chosenColorParam
 

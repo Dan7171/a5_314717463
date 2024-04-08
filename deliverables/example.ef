@@ -1,4 +1,4 @@
-project: collect_toys
+project: example
 horizon: 15
 discount: 0.97
 #include <random>
