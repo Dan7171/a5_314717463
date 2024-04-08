@@ -9,7 +9,7 @@
     "ResponseRules": [
       {
         "Response": "eSuccess",
-        "ConditionCodeWithLocalVariables": " skillSuccess"
+        "ConditionCodeWithLocalVariables": " pickSkillSuccess"
       },
       {
         "Response": "eFailed",
@@ -51,10 +51,10 @@
     },
     {
       "FromROSServiceResponse": true,
-      "LocalVariableName": "skillSuccess",
+      "LocalVariableName": "pickSkillSuccess",
       "VariableType": "bool",
       "AssignmentCode": [
-        "skillSuccess=__input.success"
+        "pickSkillSuccess=__input.success"
       ],
       "ImportCode": [
         {

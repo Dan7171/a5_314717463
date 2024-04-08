@@ -2,12 +2,12 @@ project: example
 local_variable: pick_toy_type_name
 action_parameter: chosenColorParam
 
-local_variable: skillSuccess
+local_variable: pickSkillSuccess
 imports: from: std_msgs.msg import: Bool
 type: bool
 from_ros_reservice_response: true  
 code: 
-skillSuccess=__input.success
+pickSkillSuccess=__input.success
  
 module_activation: ros_service
 imports: from: geometry_msgs.msg import: Point
@@ -19,7 +19,7 @@ code:
 pick_toy_type_name
 
 response: eSuccess
-response_rule: skillSuccess
+response_rule: pickSkillSuccess
 
 response: eFailed
 response_rule: True
