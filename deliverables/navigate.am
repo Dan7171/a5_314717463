@@ -1,4 +1,18 @@
 project: example 
+// possible responses
+response: eSuccess
+response_rule: navigateSkillSuccess
+response: eFailed
+response_rule: True
+
+module_activation: ros_service
+imports: from: geometry_msgs.msg import: Point
+imports: from: task3_env.srv import: navigate, navigateResponse
+path: /navigate
+srv: navigate
+parameter: location
+code:
+navToLocLocalVar
 
 local_variable: navToLocLocalVar
 action_parameter: navToLoc
@@ -10,21 +24,8 @@ from_ros_reservice_response: true
 code: 
 navigateSkillSuccess=__input.success
  
-module_activation: ros_service
-imports: from: geometry_msgs.msg import: Point
-imports: from: task3_env.srv import: navigate, navigateResponse
-path: /navigate
-srv: navigate
-parameter: location
-code:
-navToLocLocalVar
 
-response: eSuccess
-response_rule: navigateSkillSuccess
 
-response: eFailed
-response_rule: True
-  
   
   
   
